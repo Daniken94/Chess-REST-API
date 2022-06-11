@@ -114,6 +114,7 @@ class Figure:
 class Pawn(Figure):
     def __init__(self,color, x ,y):
         super().__init__(color, x ,y)
+        
     def get_path_to_position(self, x, y):
         path = []
         if self.color == 'white':
@@ -144,6 +145,9 @@ class Pawn(Figure):
                 else:
                     allowed_move.append((self.x, self.y-1))
         new_allowed_move = []
+
+    def __str__(self, list_allowed_moves):
+        return list_allowed_moves()
 
         # at this point we got all possible allowed_move
 
