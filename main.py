@@ -1,221 +1,31 @@
-def show(chessboard):
+from flask import Flask, Response
+from flask_restful import Api, Resource, abort
 
-    """Shows the chessboard in the console.
+app = Flask(__name__)
+api = Api(app)
 
-    DOES NOT WORK UNTIL ALL CLASES: Pawn, Knight, Queen, King, Rook, Bishop ARE CREATED!!!
-
-    """
-
-    WHITE = {
-        Pawn: chr(9817),
-        Knight: chr(9816),
-        Queen: chr(9813),
-        King: chr(9812),
-        Rook: chr(9814),
-        Bishop: chr(9815),
-    }
-
-    BLACK = {
-        Pawn: chr(9823),
-        Knight: chr(9818),
-        Queen: chr(9819),
-        King: chr(9812),
-        Rook: chr(9820),
-        Bishop: chr(9821),
-    }
-
-    for y in range(7, -1, -1):
-        print(y, end='\t')
-        for x in range(8):
-            if chessboard.board[x][y] is not None:
-                if chessboard.board[x][y].color == 'white':
-                    print(WHITE[type(chessboard.board[x][y])], end='\t')
-                else:
-                    print(BLACK[type(chessboard.board[x][y])], end='\t')
-            else:
-                print('\t', end='')
-        print('\n')
-    print('\t', end='')
-
-    for x in range(8):
-        print(x, end='\t')
-    print()
-
-class Chessboard:
-    def __init__(self):
-        self.color = "white"
-        self.board = [[None]*8 for i in range(8)]
-
-    def setup(self):
-        for x in range(8):
-            for y in range(8):
-                if y==0:
-                    self.board[0][y] = Rook('white', 0, y)
-                    self.board[7][y] = Rook('white', 7, y)
-                    self.board[1][y] = Knight('white', 1, y)
-                    self.board[6][y] = Knight('white', 6, y)
-                    self.board[2][y] = Bishop('white', 2, y)
-                    self.board[5][y] = Bishop('white', 5, y)
-                    self.board[3][y] = Queen('white', 3, y)
-                    self.board[4][y] = King('white', 4, y)
-                if y == 1:
-                    self.board[x][y] = Pawn('white', x, y)
-                if y == 6:
-                    self.board[x][y] = Pawn('black', x, y)
-                if y == 7:
-                    self.board[0][y] = Rook('black', 0, y)
-                    self.board[7][y] = Rook('black', 7, y)
-                    self.board[1][y] = Knight('black', 1, y)
-                    self.board[6][y] = Knight('black', 6, y)
-                    self.board[2][y] = Bishop('black', 2, y)
-                    self.board[5][y] = Bishop('black', 5, y)
-                    self.board[3][y] = Queen('black', 3, y)
-                    self.board[4][y] = King('black', 4, y)
-
-    def __getitem__(self, item):
-        return self.board[item]
-
-    def list_allowed_moves(self, x, y):
-        figura = self.board[x][y]
-        if not isinstance(figura, Figure):
-            return None
-
-        if figura.color != self.color:
-            return None
-
-        return figura.list_allowed_moves(self.board)
-
-    def move(self, from_x, from_y, to_x, to_y):
-        allowed_moves = self.list_allowed_moves(from_x, from_y)
-        if allowed_moves is None:
-            raise ValueError("not allowed move")
-
-        if (to_x, to_y) in allowed_moves:
-            figura = self.board[from_x][from_y]
-            figura.move(to_x, to_y)
-            self.board[to_x][to_y] = self.board[from_x][from_y]
-            self.board[from_x][from_y] = None
-            if self.color == "white":
-                self.color = "black"
-            else:
-                self.color = "white"
-        else:
-            raise ValueError("not allowed move")
 
 class Figure:
-    def __init__(self, color, x ,y):
-        self.color = color
+    def __init__(self, x ,y):
         self.x = x
         self.y = y
+
     def move(self, x, y):
         self.x = x
         self.y = y
 
-class Pawn(Figure):
-    def __init__(self,color, x ,y):
-        super().__init__(color, x ,y)
-        
-    def get_path_to_position(self, x, y):
-        path = []
-        if self.color == 'white':
-            start_point = self.y+1
-            end_point = y+1
-            for path_y in range(start_point, end_point):
-                path.append((x, path_y))
-        else:
-            start_point = self.y-1
-            end_point = y-1
-            for path_y in range(start_point, end_point, -1):
-                path.append((x, path_y))
-        return path
-    def list_allowed_moves(self, chessboard):
-        allowed_move = []
-        if self.color == "white":
-            if self.y < 7:
-                if self.y ==1:
-                    allowed_move.append((self.x, self.y + 1))
-                    allowed_move.append((self.x, self.y+2))
-                else:
-                    allowed_move.append((self.x, self.y+1))
-        else:
-            if self.y >= 1:
-                if self.y == 6:
-                    allowed_move.append((self.x, self.y-1))
-                    allowed_move.append((self.x, self.y-2))
-                else:
-                    allowed_move.append((self.x, self.y-1))
-        new_allowed_move = []
+    def list_available_moves(self):
+        pass
 
-    def __str__(self, list_allowed_moves):
-        return list_allowed_moves()
+    def validate_move(self, dest_field):
+        pass
 
-        # at this point we got all possible allowed_move
 
-        # check additional rules
+class KingFigure(Figure):
+    def __init__(self, x ,y):
+        super().__init__(x ,y)
 
-        for move in allowed_move:
-
-            # check if path are free (now figure are there)
-
-            # skip the move if there is a figure in the path
-
-            path_moves = self.get_path_to_position(move[0], move[1])
-            if len(path_moves) > 0:
-                for path_move in path_moves:
-                    if chessboard[path_move[0]][path_move[1]] is not None and isinstance(chessboard[path_move[0]][path_move[1]], Figure):
-                        continue
-                new_allowed_move.append(path_move)
-        if self.color == "white":
-            possible_capture_moves =  [(self.x-1,self.y+1), (self.x+1,self.y+1)]
-            for possible_capture_move in possible_capture_moves:
-                if 0 <= possible_capture_move[0] <= 7 and  0 <= possible_capture_move[1] <= 7:
-                    if isinstance(chessboard[possible_capture_move[0]][possible_capture_move[1]], Figure):
-                        if chessboard[possible_capture_move[0]][possible_capture_move[1]].color == 'black':
-                            new_allowed_move.append(possible_capture_move)
-        if self.color == "black":
-            possible_capture_moves =  [(self.x-1,self.y-1), (self.x+1,self.y-1)]
-            for possible_capture_move in possible_capture_moves:
-                if 0 <= possible_capture_move[0] <= 7 and 0 <= possible_capture_move[1] <= 7:
-                    print("possible_capture_move", possible_capture_move)
-                    if isinstance(chessboard[possible_capture_move[0]][possible_capture_move[1]], Figure):
-                        if chessboard[possible_capture_move[0]][possible_capture_move[1]].color == 'white':
-                            new_allowed_move.append(possible_capture_move)
-        return new_allowed_move
-
-class Knight(Figure):
-    def __init__(self,color, x ,y):
-        super().__init__(color, x ,y)
-    def list_allowed_moves(self, chessboard):
-        allowed_move = []
-        X = [2, 1, -1, -2, -2, -1, 1, 2]
-        Y = [1, 2, 2, 1, -1, -2, -2, -1]
-        for i in range(8):
-            x = self.x+ X[i]
-            y = self.y + Y[i]
-            if 0 <= x < 8 and 0 <= y < 8:
-                allowed_move.append((x,y))
-            return allowed_move
-
-class Rook(Figure):
-    def __init__(self,color, x ,y):
-        super().__init__(color, x ,y)
-    def list_allowed_moves(self, chessboard):
-        allowed_move = []
-        # move horizontal - x the same, y changed
-        for Y in range(8):
-            if self.y != Y:
-                allowed_move.append((self.x, Y))
-        # move vertical - x changed, y the same
-        for X in range(8):
-            if self.x != X:
-                allowed_move.append((X, self.y))
-        return allowed_move
-
-class King(Figure):
-    def __init__(self,color, x ,y):
-        super().__init__(color, x ,y)
-
-    def list_allowed_moves(self, chessboard):
+    def list_allowed_moves(self):
         allowed_move = []
         X = [1, -1,0, 0, 1, -1, -1, 1]
         Y = [0, 0, 1, -1, 1, -1,  1, -1]
@@ -227,11 +37,87 @@ class King(Figure):
                 allowed_move.append((x,y))
         return allowed_move
 
-class Bishop(Figure):
-    def __init__(self,color, x ,y):
-        super().__init__(color, x ,y)
+    def validate_move(self, a, b):
+        self.a = a 
+        self.b = b
+        new_move = []
+        new_move.append(a)
+        new_move.append(b)
+        return new_move
 
-    def list_allowed_moves(self, chessboard):
+
+class PawnFigure(Figure):
+    def __init__(self, x ,y):
+        super().__init__(x ,y)
+        
+    def list_allowed_moves(self):
+        allowed_move = []
+        if self.y < 7:
+            allowed_move.append((self.x, self.y + 1))
+            allowed_move.append((self.x, self.y + 2))
+        else:
+            allowed_move.append((self.x, self.y-1))
+            allowed_move.append((self.x, self.y-2))
+        return allowed_move
+
+    def validate_move(self, a, b):
+        self.a = a 
+        self.b = b
+        new_move = []
+        new_move.append(a)
+        new_move.append(b)
+        return new_move
+
+
+class KnightFigure(Figure):
+    def __init__(self, x ,y):
+        super().__init__(x ,y)
+    def list_allowed_moves(self):
+        allowed_move = []
+        X = [2, 1, -1, -2, -2, -1, 1, 2]
+        Y = [1, 2, 2, 1, -1, -2, -2, -1]
+
+        for i in range(8):
+            x = self.x + X[i]
+            y = self.y + Y[i]
+            if 0 <= x < 8 and 0 <= y < 8:
+                allowed_move.append((x,y))
+        return allowed_move
+
+    def validate_move(self, a, b):
+        self.a = a 
+        self.b = b
+        new_move = []
+        new_move.append(a)
+        new_move.append(b)
+        return new_move
+
+class RookFigure(Figure):
+    def __init__(self, x ,y):
+        super().__init__(x ,y)
+    def list_allowed_moves(self):
+        allowed_move = []
+        for Y in range(8):
+            if self.y != Y:
+                allowed_move.append((self.x, Y))
+        for X in range(8):
+            if self.x != X:
+                allowed_move.append((X, self.y))
+        return allowed_move    
+    def validate_move(self, a, b):
+        self.a = a 
+        self.b = b
+        new_move = []
+        new_move.append(a)
+        new_move.append(b)
+        return new_move   
+
+
+class BishopFigure(Figure):
+    def __init__(self, x ,y):
+        super().__init__(x ,y)
+
+    def list_allowed_moves(self):
         allowed_move = set()
 
         for i in range(1,8):
@@ -260,12 +146,20 @@ class Bishop(Figure):
 
         return list(allowed_move)
 
-class Queen(Figure):
+    def validate_move(self, a, b):
+        self.a = a 
+        self.b = b
+        new_move = []
+        new_move.append(a)
+        new_move.append(b)
+        return new_move 
 
-    def __init__(self,color, x ,y):
-        super().__init__(color, x ,y)
 
-    def list_allowed_moves(self, chessboard):
+class QueenFigure(Figure):
+    def __init__(self, x ,y):
+        super().__init__(x ,y)
+
+    def list_allowed_moves(self):
         allowed_move = set()
         for i in range(1,8):
             x = self.x+ i
@@ -301,3 +195,92 @@ class Queen(Figure):
             if self.x != X:
                 allowed_move.add((X, self.y))
         return list(allowed_move)
+
+    def validate_move(self, a, b):
+        self.a = a 
+        self.b = b
+        new_move = []
+        new_move.append(a)
+        new_move.append(b)
+        return new_move 
+
+
+
+
+figures_dict = {}
+figures_dict_validation = {}
+
+figures = {
+    "king": KingFigure,
+    "pawn": PawnFigure,
+    "knight": KnightFigure,
+    "rook": RookFigure,
+    "bishop": BishopFigure,
+    "queen": QueenFigure
+}
+
+
+
+def abort_if_figure_doesent_exist(url_figure):
+    if url_figure not in figures:
+        abort(404, message="Figure is not valid...")
+
+def abort_if_cords_doesent_exist(x, y, a, b):
+    if x > 7 or y > 7 or a > 7 or b > 7:
+        abort(404, message="Cords is not valid...out of chessboard!")
+
+
+class Chess(Resource):
+    def get(self, url_figure, x, y):
+        err = []
+
+        abort_if_figure_doesent_exist(url_figure)
+        if url_figure not in figures:
+            err.append("Figure is not valid...")
+
+        if x > 7 or y > 7:
+            err.append("Cords is not valid...out of chessboard!")
+
+        
+        figure = figures.get(url_figure)
+        args = figure(x, y).list_allowed_moves()
+        figures_dict["availableMoves"] = str(args)[1:-1] if len(err)<1 else []
+        figures_dict["error"] = None if len(err)<1 else err[0]
+        figures_dict["figure"] = str(url_figure)
+        figures_dict["currentField"] = str(x) + ", " + str(y)
+        return figures_dict, 200
+
+
+class ChessValid(Resource):
+
+    def get(self, url_figure_valid, x, y, a, b):
+        err = []
+
+        abort_if_figure_doesent_exist(url_figure_valid)
+        abort_if_cords_doesent_exist(x, y, a, b)
+        if url_figure_valid not in figures:
+            err.append("Figure is not valid...")
+
+        figure = figures.get(url_figure_valid)
+        args = figure(x, y).list_allowed_moves()
+        validation = figure(x, y).validate_move(a, b)
+
+        if str(validation)[1:5] in str(args):
+            info = "valid"
+        else:
+            info = "invalid"
+            err.append("Current move is not permitted!")
+
+        figures_dict_validation["move"] = info
+        figures_dict_validation["figure"] = str(url_figure_valid)
+        figures_dict_validation["error"] = None if len(err)<1 else err[0]
+        figures_dict_validation["currentField"] = str(x) + "," + str(y)
+        figures_dict_validation["destField"] = str(a) + "," + str(b)
+        return figures_dict_validation, 200
+
+
+api.add_resource(Chess, "/api/v1/<string:url_figure>/<int:x>/<int:y>")
+api.add_resource(ChessValid, "/api/v1/<string:url_figure_valid>/<int:x>/<int:y>/<int:a>/<int:b>")
+
+if __name__ == "__main__":
+    app.run(debug=True)
