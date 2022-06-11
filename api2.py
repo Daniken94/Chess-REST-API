@@ -1,5 +1,6 @@
 from flask import Flask, request
 from flask_restful import Api, Resource, reqparse, abort
+from sqlalchemy import null
 
 
 app = Flask(__name__)
@@ -39,10 +40,7 @@ class KingFigure(Figure):
         return allowed_move
 
 
-# figure_put_args = reqparse.RequestParser()
-# figure_put_args.add_argument("allowed_moves", type=list, required=False)
-
-fig = {}
+figures_dict = {}
 
 figures = {"king": KingFigure}
 cords = [0, 1, 2, 3, 4, 5, 6, 7, 8]
@@ -51,23 +49,57 @@ def abort_if_figure_doesent_exist(url_figure):
     if url_figure not in figures:
         abort(404, message="Figure is not valid...")
 
-def abort_if_cords_doesent_exist(x, y):
-    if x or y not in cords:
-        abort(404, message="Cords is not valid...")
 
 class Chess(Resource):
     def get(self, url_figure, x, y):
         abort_if_figure_doesent_exist(url_figure)
-        abort_if_cords_doesent_exist(x, y)
+        if url_figure not in figures:
+            err = "Figure is not valid..."
+        else:
+            err = None
+
+        if x or y not in cords:
+            err = "Cords is not valid..."
+        else:
+            err = None
+
+        
         figure = figures.get(url_figure)
         args = figure(x, y).list_allowed_moves()
-        fig["allowed_moves"] = args
-        fig["figure"] = str(figure)
-        fig["current_field"] = str(x) + "," + str(y)
-        return fig
+        figures_dict["allowed_moves"] = str(args)
+        figures_dict["error"] = err
+        figures_dict["figure"] = str(url_figure)
+        figures_dict["current_field"] = str(x) + "," + str(y)
+        return figures_dict
 
 
-api.add_resource(Chess, "/api/v1/<string:figure>/<int:x>/<int:y>")
+class ChessValid(Resource):
+    def get(self, url_figure, x, y, a, b):
+        abort_if_figure_doesent_exist(url_figure)
+        if url_figure not in figures:
+            err = "Figure is not valid..."
+        else:
+            err = None
+
+        if x or y not in cords:
+            err = "Cords is not valid..."
+        else:
+            err = None
+
+        validation = str(a) + "," + str(b)
+        
+        figure = figures.get(url_figure)
+        args = figure(x, y).list_allowed_moves()
+        figures_dict["move"] = validation
+        figures_dict["allowed_moves"] = str(args)
+        figures_dict["error"] = err
+        figures_dict["figure"] = str(url_figure)
+        figures_dict["current_field"] = str(x) + "," + str(y)
+        return figures_dict
+
+
+api.add_resource(Chess, "/api/v1/<string:url_figure>/<int:x>/<int:y>")
+api.add_resource(ChessValid, "/api/v1/<string:url_figure>/<int:x>/<int:y>/<int:a>/<int:b>")
 
 if __name__ == "__main__":
     app.run(debug=True)
