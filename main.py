@@ -5,6 +5,11 @@ app = Flask(__name__)
 api = Api(app)
 
 
+@app.errorhandler(500)
+def internal_error(error):
+    return "500 error", 500
+
+
 class Figure:
     def __init__(self, x, y):
         self.x = x
@@ -200,7 +205,7 @@ def abort_if_figure_doesent_exist(url_figure):
 
 def abort_if_cords_doesent_exist(x, y, a, b):
     if x > 7 or y > 7 or a > 7 or b > 7:
-        abort(404, message="Cords is not valid...out of chessboard!")
+        abort(409, message="Cords is not valid...out of chessboard!")
 
 
 class Chess(Resource):
@@ -220,7 +225,11 @@ class Chess(Resource):
         figures_dict["error"] = None if len(err) < 1 else err[0]
         figures_dict["figure"] = str(url_figure)
         figures_dict["currentField"] = str(x) + ", " + str(y)
-        return figures_dict, 200
+
+        if figures_dict["error"]:
+            return figures_dict, 409
+        else:
+            return figures_dict, 200
 
 
 class ChessValid(Resource):
