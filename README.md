@@ -52,7 +52,7 @@ crtl + c
 # How it use:
 
 
-![Screenshot](chess-board.jpg)
+https://github.com/Daniken94/Chess-REST-API/blob/main/image/chess-board.jpg
 
 
 
