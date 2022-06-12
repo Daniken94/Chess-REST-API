@@ -52,7 +52,7 @@ crtl + c
 # How it use:
 
 
-<img src="Daniken94/Chess-REST-API/blob/main/image/chess-board.jpg" width="128"/>
+<img src="Chess-REST-API/blob/main/image/chess-board.jpg" width="128"/>
 
 
 
