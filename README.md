@@ -65,9 +65,13 @@ How to do it:
 
 Url endpoint is:
 
-`your computer ip adress  +  /api/v1/figure>/cords_from_x_axis/cords_from_y_axis`
+`http://127.0.0.1:5000/api/v1/figure>/cords_from_x_axis/cords_from_y_axis`
 
 ```
+http://127.0.0.1:5000 = localhost5000
+
+/api/v1/ = it's required
+
 figure = figure you want to check. You can choose from pawn, rook, bishop, knight, queen, king.
 
 cords_from_x_axis = horizontal cords from 0-7
@@ -78,25 +82,29 @@ cords_from_y_axis = vertical cords from 0-7
 For example:
 If you want check available moves for King while standing on cords (0, 4) you must use endpoint:
 
-`your computer ip adress  +  /api/v1/king/0/4`
+`http://127.0.0.1:5000/api/v1/king/0/4`
 
 or if you want check available moves for Rook while standing on cords (2, 0) you must use endpoint:
 
-`your computer ip adress  +  /api/v1/rook/2/4`
-
-
+`http://127.0.0.1:5000/api/v1/rook/2/4`
 
 
 
 In this app you can also easily check validation for chosen figures moves.
 
+
+
 How to do it:
 
 Url endpoint is:
 
-`your computer ip adress  +  /api/v1/figure>/cords_from_x_axis/cords_from_y_axis/cords_to_destiny_x_axis/cords_to_destiny_y_axis`
+`http://127.0.0.1:5000/api/v1/figure>/cords_from_x_axis/cords_from_y_axis/cords_to_destiny_x_axis/cords_to_destiny_y_axis`
 
 ```
+http://127.0.0.1:5000 = localhost5000
+
+/api/v1/ = it's required
+
 figure = figure you want to check. You can choose from pawn, rook, bishop, knight, queen, king.
 
 cords_from_x_axis = horizontal cords from 0-7
@@ -106,14 +114,16 @@ cords_from_y_axis = vertical cords from 0-7
 cords_to_destiny_x_axis = horizontal destiny cords from 0-7
 
 cords_to_destiny_y_axis = vertical destiny cords from 0-7
+```
 
 
 For example:
+
 If you want check that Pawn from (2, 1) cords can go to (2, 2) cords you must use endpoint:
 
-`your computer ip adress  +  /api/v1/pawn/2/1/2/2`
+`http://127.0.0.1:5000/api/v1/pawn/2/1/2/2`
 
 or if you want check that Bishop from (1, 0) cords can go to (6, 6) cords you must use endpoint:
 
-`your computer ip adress  +  /api/v1/bishop/1/0/6/6`
+`http://127.0.0.1:5000/api/v1/bishop/1/0/6/6`
 
