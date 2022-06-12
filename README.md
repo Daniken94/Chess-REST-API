@@ -35,12 +35,6 @@ pip install flask_restful==0.3.9
 ```
 pip install pytest==7.1.2
 ```
-```
-pip install black==22.3.0
-```
-```
-pip install flake8==2.4.0
-```
 
 ## Execution:
 
@@ -49,10 +43,16 @@ Run the following code in your terminal:
 ```
 python main.py
 ```
+In order to terminate the use and shut down the server it is necessary to run command in your terminal:
+
+```
+crtl + c
+```
+
 # How it use:
 
 
-
+![Screenshot](chess-board.jpg)
 
 
 
