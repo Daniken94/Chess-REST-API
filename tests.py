@@ -8,6 +8,10 @@ from main import (
     PawnFigure,
 )
 
+# For each class:
+# It's build with 4 def: "move in range", "move out of range", "move valid",
+# "move invalid"
+
 
 class TestKingMoves:
     def test_move_in_range(self):

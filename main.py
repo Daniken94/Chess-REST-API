@@ -4,10 +4,15 @@ from flask_restful import Api, Resource, abort
 app = Flask(__name__)
 api = Api(app)
 
+# Catching 500 server error
+
 
 @app.errorhandler(500)
 def internal_error(error):
     return "500 error", 500
+
+
+# Basic Figure class
 
 
 class Figure:
@@ -26,6 +31,9 @@ class Figure:
         new_move.append(a)
         new_move.append(b)
         return new_move
+
+
+# Next 6 classes is for each chess figure. It's creating their moves.
 
 
 class KingFigure(Figure):
@@ -165,13 +173,11 @@ class QueenFigure(Figure):
                 if 0 <= x < 8 and 0 <= y < 8:
                     allowed_move.add((x, y))
 
-            # move horizontal - x the same, y changed
             for Y in range(8):
                 if self.y != Y:
                     if 0 <= self.y < 8 and 0 <= y < 8:
                         allowed_move.add((self.x, Y))
 
-            # move vertical - x changed, y the same
             for X in range(8):
                 if self.x != X:
                     if 0 <= self.x < 8 and 0 <= y < 8:
@@ -181,8 +187,14 @@ class QueenFigure(Figure):
         return list(allowed_move)
 
 
+# Dict are nessesary for catch figure's moves.
+
+
 figures_dict = {}
 figures_dict_validation = {}
+
+# Dict figures for easly catch class name from url endpoint
+
 
 figures = {
     "king": KingFigure,
@@ -192,6 +204,8 @@ figures = {
     "bishop": BishopFigure,
     "queen": QueenFigure,
 }
+
+# Service code 404 while figure is not available
 
 
 def abort_if_figure_doesent_exist(url_figure):
@@ -203,9 +217,20 @@ def abort_if_figure_doesent_exist(url_figure):
         )
 
 
+# Service 409 code while cords are out of range.
+
+
 def abort_if_cords_doesent_exist(x, y, a, b):
     if x > 7 or y > 7 or a > 7 or b > 7:
         abort(409, message="Cords is not valid...out of chessboard!")
+
+
+# Class for check available moves for figure and it's cords on chessboard
+# get in endpoint.
+
+# Can't use abort_if_cords_doesent_exist beacouse I need send error message
+# so in the end i check list with error messages. If it's empty send code 200
+# but if got a message send code 409 and show this message.
 
 
 class Chess(Resource):
@@ -232,6 +257,9 @@ class Chess(Resource):
             return figures_dict, 200
 
 
+# Class for validate move
+
+
 class ChessValid(Resource):
     def get(self, url_fig_val, x, y, a, b):
         err = []
@@ -255,6 +283,9 @@ class ChessValid(Resource):
         figures_dict_validation["currentField"] = str(x) + "," + str(y)
         figures_dict_validation["destField"] = str(a) + "," + str(b)
         return figures_dict_validation, 200
+
+
+# Avaible endpoints
 
 
 api.add_resource(Chess, "/api/v1/<string:url_figure>/<int:x>/<int:y>")
