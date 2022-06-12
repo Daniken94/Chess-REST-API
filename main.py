@@ -1,4 +1,4 @@
-from flask import Flask, Response
+from flask import Flask
 from flask_restful import Api, Resource, abort
 
 app = Flask(__name__)
@@ -193,7 +193,8 @@ def abort_if_figure_doesent_exist(url_figure):
     if url_figure not in figures:
         abort(
             404,
-            message="Figure is not valid. You must choose from: pawn, rook, bishop, knight, queen, king",
+            message="""Figure is not valid. You must choose from:
+            pawn, rook, bishop, knight, queen, king""",
         )
 
 
@@ -214,8 +215,8 @@ class Chess(Resource):
             err.append("Cords is not valid...out of chessboard!")
 
         figure = figures.get(url_figure)
-        args = figure(x, y).list_allowed_moves()
-        figures_dict["availableMoves"] = str(args)[1:-1] if len(err) < 1 else []
+        arg = figure(x, y).list_allowed_moves()
+        figures_dict["availableMoves"] = str(arg)[1:-1] if len(err) < 1 else []
         figures_dict["error"] = None if len(err) < 1 else err[0]
         figures_dict["figure"] = str(url_figure)
         figures_dict["currentField"] = str(x) + ", " + str(y)
@@ -223,13 +224,13 @@ class Chess(Resource):
 
 
 class ChessValid(Resource):
-    def get(self, url_figure_valid, x, y, a, b):
+    def get(self, url_fig_val, x, y, a, b):
         err = []
 
-        abort_if_figure_doesent_exist(url_figure_valid)
+        abort_if_figure_doesent_exist(url_fig_val)
         abort_if_cords_doesent_exist(x, y, a, b)
 
-        figure = figures.get(url_figure_valid)
+        figure = figures.get(url_fig_val)
         args = figure(x, y).list_allowed_moves()
         validation = figure(x, y).validate_move(a, b)
 
@@ -240,7 +241,7 @@ class ChessValid(Resource):
             err.append("Current move is not permitted!")
 
         figures_dict_validation["move"] = info
-        figures_dict_validation["figure"] = str(url_figure_valid)
+        figures_dict_validation["figure"] = str(url_fig_val)
         figures_dict_validation["error"] = None if len(err) < 1 else err[0]
         figures_dict_validation["currentField"] = str(x) + "," + str(y)
         figures_dict_validation["destField"] = str(a) + "," + str(b)
@@ -249,7 +250,7 @@ class ChessValid(Resource):
 
 api.add_resource(Chess, "/api/v1/<string:url_figure>/<int:x>/<int:y>")
 api.add_resource(
-    ChessValid, "/api/v1/<string:url_figure_valid>/<int:x>/<int:y>/<int:a>/<int:b>"
+    ChessValid, "/api/v1/<string:url_fig_val>/<int:x>/<int:y>/<int:a>/<int:b>"
 )
 
 if __name__ == "__main__":

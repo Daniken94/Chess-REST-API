@@ -6,7 +6,6 @@ from main import (
     RookFigure,
     KnightFigure,
     PawnFigure,
-    ChessValid,
 )
 
 
@@ -33,14 +32,14 @@ class TestKingMoves:
         args = figure.list_allowed_moves()
         validation = Figure.validate_move(KingFigure, 5, 5)
         result = str(validation)[1:5] in str(args)
-        assert result == True
+        assert result is True
 
     def test_king_invalid(self):
         figure = KingFigure(4, 5)
         args = figure.list_allowed_moves()
         validation = Figure.validate_move(KingFigure, 5, 2)
         result = str(validation)[1:5] in str(args)
-        assert result == False
+        assert result is False
 
 
 class TestQueenMoves:
@@ -69,14 +68,14 @@ class TestQueenMoves:
         args = figure.list_allowed_moves()
         validation = Figure.validate_move(QueenFigure, 0, 1)
         result = str(validation)[1:5] in str(args)
-        assert result == True
+        assert result is True
 
     def test_queen_invalid(self):
         figure = QueenFigure(4, 5)
         args = figure.list_allowed_moves()
         validation = Figure.validate_move(QueenFigure, 5, 2)
         result = str(validation)[1:5] in str(args)
-        assert result == False
+        assert result is False
 
 
 class TestBishopMoves:
@@ -105,14 +104,14 @@ class TestBishopMoves:
         args = figure.list_allowed_moves()
         validation = Figure.validate_move(QueenFigure, 0, 1)
         result = str(validation)[1:5] in str(args)
-        assert result == True
+        assert result is True
 
     def test_bishop_invalid(self):
         figure = BishopFigure(4, 5)
         args = figure.list_allowed_moves()
         validation = Figure.validate_move(QueenFigure, 5, 2)
         result = str(validation)[1:5] in str(args)
-        assert result == False
+        assert result is False
 
 
 class TestRookMoves:
@@ -144,14 +143,14 @@ class TestRookMoves:
         args = figure.list_allowed_moves()
         validation = Figure.validate_move(RookFigure, 4, 1)
         result = str(validation)[1:5] in str(args)
-        assert result == True
+        assert result is True
 
     def test_rook_invalid(self):
         figure = RookFigure(4, 5)
         args = figure.list_allowed_moves()
         validation = Figure.validate_move(RookFigure, 5, 2)
         result = str(validation)[1:5] in str(args)
-        assert result == False
+        assert result is False
 
 
 class TestKnightMoves:
@@ -177,14 +176,14 @@ class TestKnightMoves:
         args = figure.list_allowed_moves()
         validation = Figure.validate_move(KnightFigure, 6, 6)
         result = str(validation)[1:5] in str(args)
-        assert result == True
+        assert result is True
 
     def test_knight_invalid(self):
         figure = KnightFigure(4, 5)
         args = figure.list_allowed_moves()
         validation = Figure.validate_move(KnightFigure, 5, 2)
         result = str(validation)[1:5] in str(args)
-        assert result == False
+        assert result is False
 
 
 class TestPawnMoves:
@@ -201,11 +200,11 @@ class TestPawnMoves:
         args = figure.list_allowed_moves()
         validation = Figure.validate_move(PawnFigure, 4, 2)
         result = str(validation)[1:5] in str(args)
-        assert result == True
+        assert result is True
 
     def test_pawn_invalid(self):
         figure = PawnFigure(4, 1)
         args = figure.list_allowed_moves()
         validation = Figure.validate_move(PawnFigure, 5, 2)
         result = str(validation)[1:5] in str(args)
-        assert result == False
+        assert result is False
