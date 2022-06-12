@@ -6,7 +6,7 @@ api = Api(app)
 
 
 class Figure:
-    def __init__(self, x ,y):
+    def __init__(self, x, y):
         self.x = x
         self.y = y
 
@@ -15,7 +15,7 @@ class Figure:
         self.y = y
 
     def validate_move(self, a, b):
-        self.a = a 
+        self.a = a
         self.b = b
         new_move = []
         new_move.append(a)
@@ -24,26 +24,26 @@ class Figure:
 
 
 class KingFigure(Figure):
-    def __init__(self, x ,y):
-        super().__init__(x ,y)
+    def __init__(self, x, y):
+        super().__init__(x, y)
 
     def list_allowed_moves(self):
         allowed_move = []
-        X = [1, -1,0, 0, 1, -1, -1, 1]
-        Y = [0, 0, 1, -1, 1, -1,  1, -1]
+        X = [1, -1, 0, 0, 1, -1, -1, 1]
+        Y = [0, 0, 1, -1, 1, -1, 1, -1]
 
         for i in range(8):
-            x = self.x+ X[i]
+            x = self.x + X[i]
             y = self.y + Y[i]
             if 0 <= x < 8 and 0 <= y < 8:
-                allowed_move.append((x,y))
+                allowed_move.append((x, y))
         return allowed_move
 
 
 class PawnFigure(Figure):
-    def __init__(self, x ,y):
-        super().__init__(x ,y)
-        
+    def __init__(self, x, y):
+        super().__init__(x, y)
+
     def list_allowed_moves(self):
         if self.x < 8 or self.y < 8:
             allowed_move = []
@@ -51,16 +51,17 @@ class PawnFigure(Figure):
                 allowed_move.append((self.x, self.y + 1))
                 allowed_move.append((self.x, self.y + 2))
             else:
-                allowed_move.append((self.x, self.y-1))
-                allowed_move.append((self.x, self.y-2))
+                allowed_move.append((self.x, self.y - 1))
+                allowed_move.append((self.x, self.y - 2))
         else:
             allowed_move = []
         return allowed_move
 
 
 class KnightFigure(Figure):
-    def __init__(self, x ,y):
-        super().__init__(x ,y)
+    def __init__(self, x, y):
+        super().__init__(x, y)
+
     def list_allowed_moves(self):
         allowed_move = []
         X = [2, 1, -1, -2, -2, -1, 1, 2]
@@ -70,13 +71,14 @@ class KnightFigure(Figure):
             x = self.x + X[i]
             y = self.y + Y[i]
             if 0 <= x < 8 and 0 <= y < 8:
-                allowed_move.append((x,y))
+                allowed_move.append((x, y))
         return allowed_move
 
 
 class RookFigure(Figure):
-    def __init__(self, x ,y):
-        super().__init__(x ,y)
+    def __init__(self, x, y):
+        super().__init__(x, y)
+
     def list_allowed_moves(self):
         if self.x < 8 or self.y < 8:
             allowed_move = []
@@ -88,75 +90,75 @@ class RookFigure(Figure):
                     allowed_move.append((X, self.y))
         else:
             allowed_move = []
-        return allowed_move    
+        return allowed_move
 
 
 class BishopFigure(Figure):
-    def __init__(self, x ,y):
-        super().__init__(x ,y)
+    def __init__(self, x, y):
+        super().__init__(x, y)
 
     def list_allowed_moves(self):
         if self.x < 8 or self.y < 8:
             allowed_move = set()
 
-            for i in range(1,8):
-                x = self.x+ i
+            for i in range(1, 8):
+                x = self.x + i
                 y = self.y + i
                 if 0 <= x < 8 and 0 <= y < 8:
-                    allowed_move.add((x,y))
+                    allowed_move.add((x, y))
 
-            for i in range(1,8):
+            for i in range(1, 8):
                 x = self.x - i
                 y = self.y - i
                 if 0 <= x < 8 and 0 <= y < 8:
-                    allowed_move.add((x,y))
+                    allowed_move.add((x, y))
 
-            for i in range(1,8):
-                x = self.x+ i
+            for i in range(1, 8):
+                x = self.x + i
                 y = self.y - i
                 if 0 <= x < 8 and 0 <= y < 8:
-                    allowed_move.add((x,y))
+                    allowed_move.add((x, y))
 
-            for i in range(1,8):
-                x = self.x- i
+            for i in range(1, 8):
+                x = self.x - i
                 y = self.y + i
                 if 0 <= x < 8 and 0 <= y < 8:
-                    allowed_move.add((x,y))
+                    allowed_move.add((x, y))
         else:
             allowed_move = []
         return list(allowed_move)
 
 
 class QueenFigure(Figure):
-    def __init__(self, x ,y):
-        super().__init__(x ,y)
+    def __init__(self, x, y):
+        super().__init__(x, y)
 
     def list_allowed_moves(self):
         if self.x < 8 or self.y < 8:
             allowed_move = set()
-            for i in range(1,8):
+            for i in range(1, 8):
                 x = self.x + i
                 y = self.y + i
                 if 0 <= x < 8 and 0 <= y < 8:
-                    allowed_move.add((x,y))
+                    allowed_move.add((x, y))
 
-            for i in range(1,8):
+            for i in range(1, 8):
                 x = self.x - i
                 y = self.y - i
                 if 0 <= x < 8 and 0 <= y < 8:
-                    allowed_move.add((x,y))
+                    allowed_move.add((x, y))
 
-            for i in range(1,8):
+            for i in range(1, 8):
                 x = self.x + i
                 y = self.y - i
                 if 0 <= x < 8 and 0 <= y < 8:
-                    allowed_move.add((x,y))
+                    allowed_move.add((x, y))
 
-            for i in range(1,8):
+            for i in range(1, 8):
                 x = self.x - i
                 y = self.y + i
                 if 0 <= x < 8 and 0 <= y < 8:
-                    allowed_move.add((x,y))
+                    allowed_move.add((x, y))
 
             # move horizontal - x the same, y changed
             for Y in range(8):
@@ -174,7 +176,6 @@ class QueenFigure(Figure):
         return list(allowed_move)
 
 
-
 figures_dict = {}
 figures_dict_validation = {}
 
@@ -184,14 +185,17 @@ figures = {
     "knight": KnightFigure,
     "rook": RookFigure,
     "bishop": BishopFigure,
-    "queen": QueenFigure
+    "queen": QueenFigure,
 }
-
 
 
 def abort_if_figure_doesent_exist(url_figure):
     if url_figure not in figures:
-        abort(404, message="Figure is not valid. You must choose from: pawn, rook, bishop, knight, queen, king")
+        abort(
+            404,
+            message="Figure is not valid. You must choose from: pawn, rook, bishop, knight, queen, king",
+        )
+
 
 def abort_if_cords_doesent_exist(x, y, a, b):
     if x > 7 or y > 7 or a > 7 or b > 7:
@@ -209,18 +213,16 @@ class Chess(Resource):
         if x > 7 or y > 7:
             err.append("Cords is not valid...out of chessboard!")
 
-        
         figure = figures.get(url_figure)
         args = figure(x, y).list_allowed_moves()
-        figures_dict["availableMoves"] = str(args)[1:-1] if len(err)<1 else []
-        figures_dict["error"] = None if len(err)<1 else err[0]
+        figures_dict["availableMoves"] = str(args)[1:-1] if len(err) < 1 else []
+        figures_dict["error"] = None if len(err) < 1 else err[0]
         figures_dict["figure"] = str(url_figure)
         figures_dict["currentField"] = str(x) + ", " + str(y)
         return figures_dict, 200
 
 
 class ChessValid(Resource):
-
     def get(self, url_figure_valid, x, y, a, b):
         err = []
 
@@ -239,14 +241,16 @@ class ChessValid(Resource):
 
         figures_dict_validation["move"] = info
         figures_dict_validation["figure"] = str(url_figure_valid)
-        figures_dict_validation["error"] = None if len(err)<1 else err[0]
+        figures_dict_validation["error"] = None if len(err) < 1 else err[0]
         figures_dict_validation["currentField"] = str(x) + "," + str(y)
         figures_dict_validation["destField"] = str(a) + "," + str(b)
         return figures_dict_validation, 200
 
 
 api.add_resource(Chess, "/api/v1/<string:url_figure>/<int:x>/<int:y>")
-api.add_resource(ChessValid, "/api/v1/<string:url_figure_valid>/<int:x>/<int:y>/<int:a>/<int:b>")
+api.add_resource(
+    ChessValid, "/api/v1/<string:url_figure_valid>/<int:x>/<int:y>/<int:a>/<int:b>"
+)
 
 if __name__ == "__main__":
     app.run(debug=True)
