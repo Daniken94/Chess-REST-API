@@ -52,7 +52,7 @@ crtl + c
 # How it use:
 
 
-<img src="image/chess-board.jpg" width="128"/>
+<img src="image/chess-board.jpg" width="228"/>
 
 
 
