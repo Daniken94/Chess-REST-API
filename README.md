@@ -49,19 +49,71 @@ In order to terminate the use and shut down the server it is necessary to run co
 crtl + c
 ```
 
-# How it use:
+# How it work:
 
 
 <img src="image/chess-board.jpg" width="1228"/>
 
 
+You can move the figure by chessboard cords. It's horizontal x and vertical y. Every axis has got value 0-7.
+
+## How it use:
+
+In this app you can easily check available moves chosen figures.
+
+How to do it:
+
+Url endpoint is:
+
+`your computer ip adress  +  /api/v1/figure>/cords_from_x_axis/cords_from_y_axis`
+
+```
+figure = figure you want to check. You can choose from pawn, rook, bishop, knight, queen, king.
+
+cords_from_x_axis = horizontal cords from 0-7
+
+cords_from_y_axis = vertical cords from 0-7
+```
+
+For example:
+If you want check available moves for King while standing on cords (0, 4) you must use endpoint:
+
+`your computer ip adress  +  /api/v1/king/0/4`
+
+or if you want check available moves for Rook while standing on cords (2, 0) you must use endpoint:
+
+`your computer ip adress  +  /api/v1/rook/2/4`
 
 
-- Crate new folder and new working environment using python/pip.
-- Install requirements.txt using pip. `pip install -r requirements.txt`,
 
-- Run Django command `python manage.py makemigrations` to make/prepare migrations,
-- Run Django command `python manage.py migrate` to implement migrations,
-- Run Django command `python manage.py createsuperuser` and create superuser to can use django admin site,
-- Run Cron command `ppython manage.py crontab add` to initial cron task,
-- Lastly run App using `python3 manage.py runserver`.
+
+
+In this app you can also easily check validation for chosen figures moves.
+
+How to do it:
+
+Url endpoint is:
+
+`your computer ip adress  +  /api/v1/figure>/cords_from_x_axis/cords_from_y_axis/cords_to_destiny_x_axis/cords_to_destiny_y_axis`
+
+```
+figure = figure you want to check. You can choose from pawn, rook, bishop, knight, queen, king.
+
+cords_from_x_axis = horizontal cords from 0-7
+
+cords_from_y_axis = vertical cords from 0-7
+
+cords_to_destiny_x_axis = horizontal destiny cords from 0-7
+
+cords_to_destiny_y_axis = vertical destiny cords from 0-7
+
+
+For example:
+If you want check that Pawn from (2, 1) cords can go to (2, 2) cords you must use endpoint:
+
+`your computer ip adress  +  /api/v1/pawn/2/1/2/2`
+
+or if you want check that Bishop from (1, 0) cords can go to (6, 6) cords you must use endpoint:
+
+`your computer ip adress  +  /api/v1/bishop/1/0/6/6`
+
